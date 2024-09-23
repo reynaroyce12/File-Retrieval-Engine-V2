@@ -33,9 +33,12 @@ class ProcessingEngine {
         // default virtual destructor
         virtual ~ProcessingEngine() = default;
 
-        // TO-DO re-declare index files and search files methods
         IndexResult indexFolder(std::string folderPath);
         SearchResult search(std::vector<std::string> terms);
+
+    private:
+        std::unordered_map<std::string, long> extractWords(const std::string& fileContent);
+        std::vector<DocPathFreqPair> searchAndSort(std::vector<std::string> terms);
 };
 
 #endif
