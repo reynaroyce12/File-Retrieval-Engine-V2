@@ -19,6 +19,8 @@ long IndexStore::putDocument(std::string documentPath)
 
     long documentNumber = documentMap.size() + 1;
     documentMap[documentPath] = documentNumber;
+
+    // reverse map for getDocument method for constant complexity while retrieving docs
     reverseDocumentMap[documentNumber] = documentPath;
 
     return documentNumber;

@@ -7,6 +7,7 @@
 
 ProcessingEngine::ProcessingEngine(std::shared_ptr<IndexStore> store) : store(store) { }
 
+// Utility function for extracting terms for indexing
 std::unordered_map<std::string, long> ProcessingEngine::extractWords(const std::string& fileContent) {
     std::unordered_map<std::string, long> wordFrequency;
     std::string currentWord;
@@ -28,28 +29,27 @@ std::unordered_map<std::string, long> ProcessingEngine::extractWords(const std::
     return wordFrequency;
 }
 
+// Utility function for search and sort operations
 std::vector<DocPathFreqPair> ProcessingEngine::searchAndSort(std::vector<std::string> terms)
 {
     bool hasAnd = false;
     
-    // Detect AND keyword and remove it
     auto andPos = std::find(terms.begin(), terms.end(), "AND");
     if (andPos != terms.end()) {
         hasAnd = true;
-        terms.erase(andPos);  // Remove "AND" from the terms
+        terms.erase(andPos);  
     }
 
-    // A map to store documents and their total frequencies across terms
+    // For storing documents and their total frequencies across terms
     std::unordered_map<long, long> combinedResults;  
 
     // Process each term and accumulate frequencies for matching documents
     for (const auto &term : terms) {
         if (term.empty()) continue;
 
-        auto termResults = store->lookupIndex(term);  // Get documents for the term
+        auto termResults = store->lookupIndex(term);
 
         if (termResults.empty()) {
-            // std::cout << "No files found for the given search terms." << std::endl;
             return {};
         }
 
@@ -66,17 +66,14 @@ std::vector<DocPathFreqPair> ProcessingEngine::searchAndSort(std::vector<std::st
                     currentResults[result.documentNumber] = combinedResults[result.documentNumber] + result.wordFrequency;
                 }
             }
-            combinedResults = std::move(currentResults);  // Only keep documents that match the current term
+            combinedResults = std::move(currentResults); 
         }
     }
 
-    // If AND query, ensure only documents that match all terms are kept
     if (hasAnd && combinedResults.empty()) {
-        // std::cout << "No files found for the given search terms." << std::endl;
         return {};
     }
 
-    // Convert map to sorted vector
     std::vector<DocPathFreqPair> sortedResults;
     for (const auto &[documentNumber, frequency] : combinedResults) {
         std::string documentPath = store->getDocument(documentNumber);
@@ -84,8 +81,8 @@ std::vector<DocPathFreqPair> ProcessingEngine::searchAndSort(std::vector<std::st
     }
 
     // Sort by frequency in descending order
-    std::sort(sortedResults.begin(), sortedResults.end(), [](const DocPathFreqPair &a, const DocPathFreqPair &b) {
-        return a.wordFrequency > b.wordFrequency;
+    std::sort(sortedResults.begin(), sortedResults.end(), [](const DocPathFreqPair &value1, const DocPathFreqPair &value2) {
+        return value1.wordFrequency > value2.wordFrequency;
     });
 
     // Return top 10 results
@@ -142,7 +139,10 @@ SearchResult ProcessingEngine::search(std::vector<std::string> terms) {
     result.documentFrequencies  = searchAndSort(terms);
 
     auto searchStopTime = std::chrono::steady_clock::now();
-    result.excutionTime = std::chrono::duration_cast<std::chrono::seconds>(searchStopTime - searchStartTime).count();
+
+    // Displaying search time in microseconds, as the operation often takes less than a second
+    auto durationInMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(searchStopTime - searchStartTime).count();
+    result.excutionTime = durationInMicroseconds; 
     
 
     return std::move(result);

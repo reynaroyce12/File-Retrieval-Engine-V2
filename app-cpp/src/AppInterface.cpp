@@ -8,29 +8,28 @@
 
 AppInterface::AppInterface(std::shared_ptr<ProcessingEngine> engine) : engine(engine) { }
 
+// Function for processing the search query for case insensitivity
 std::string processSearchQuery(const std::string& searchQuery) {
     std::istringstream stream(searchQuery);
     std::string word;
     std::vector<std::string> processedWords;
 
     while (stream >> word) {
-        // Check if the word is "AND"
         if (word == "AND") {
-            processedWords.push_back(word); // Keep "AND" as is
+            processedWords.push_back(word);
         } else {
-            // Convert to lowercase
             std::transform(word.begin(), word.end(), word.begin(), ::tolower);
             processedWords.push_back(word);
         }
     }
 
-    // Reconstruct the query
+    // Reconstructing the query
     std::string result;
-    for (const auto& w : processedWords) {
+    for (const auto& word : processedWords) {
         if (!result.empty()) {
-            result += " "; // Add space between words
+            result += " "; 
         }
-        result += w;
+        result += word;
     }
 
     return result;
@@ -38,6 +37,7 @@ std::string processSearchQuery(const std::string& searchQuery) {
 
 void AppInterface::readCommands() {
     
+    // color code constants for output messages
     const std::string RED = "\033[31m";
     const std::string GREEN = "\033[32m";
     const std::string YELLOW = "\033[33m";
@@ -112,7 +112,7 @@ void AppInterface::readCommands() {
 
             SearchResult result = engine->search(terms);
 
-            std::cout << "\nSearch executed in " << result.excutionTime << " seconds." << std::endl;
+            std::cout << "\nSearch executed in " << result.excutionTime << " μs." << std::endl;
 
             if (result.documentFrequencies.empty()) {
                 std::cout << YELLOW << "No results found" << RESET << std::endl;

@@ -36,6 +36,7 @@ class ProcessingEngine {
         IndexResult indexFolder(std::string folderPath);
         SearchResult search(std::vector<std::string> terms);
 
+    // Utility functions for the indexFolder and search method
     private:
         std::unordered_map<std::string, long> extractWords(const std::string& fileContent);
         std::vector<DocPathFreqPair> searchAndSort(std::vector<std::string> terms);

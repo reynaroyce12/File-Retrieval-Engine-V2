@@ -17,6 +17,8 @@ class IndexStore
 
 public:
     std::unordered_map<std::string, long> documentMap;
+
+    // reverse map for getDocument method for constant complexity
     std::unordered_map<long, std::string> reverseDocumentMap;
 
     std::unordered_map<std::string, std::vector<DocFreqPair>> termInvertedIndex;
