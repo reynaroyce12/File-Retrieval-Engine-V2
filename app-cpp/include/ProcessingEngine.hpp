@@ -26,18 +26,23 @@ class ProcessingEngine {
     // keep a reference to the index store
     std::shared_ptr<IndexStore> store;
 
-    // the number of worker threads to use during indexing
     int numWorkerThreads;
 
     public:
         // constructor
+        // ProcessingEngine(std::shared_ptr<IndexStore> store);
         ProcessingEngine(std::shared_ptr<IndexStore> store, int numWorkerThreads);
 
         // default virtual destructor
         virtual ~ProcessingEngine() = default;
-        
+
         IndexResult indexFolder(std::string folderPath);
         SearchResult search(std::vector<std::string> terms);
+
+    // Utility functions for the indexFolder and search method
+    private:
+        std::unordered_map<std::string, long> extractWords(const std::string& fileContent);
+        std::vector<DocPathFreqPair> searchAndSort(std::vector<std::string> terms);
 };
 
 #endif
