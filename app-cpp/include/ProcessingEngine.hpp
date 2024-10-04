@@ -30,7 +30,6 @@ class ProcessingEngine {
 
     public:
         // constructor
-        // ProcessingEngine(std::shared_ptr<IndexStore> store);
         ProcessingEngine(std::shared_ptr<IndexStore> store, int numWorkerThreads);
 
         // default virtual destructor

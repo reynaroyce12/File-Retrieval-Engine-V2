@@ -26,7 +26,6 @@ public:
     std::unordered_map<long, std::string> reverseDocumentMap;  // reverse map for getDocument method for constant complexity
     std::unordered_map<std::string, std::vector<DocFreqPair>> termInvertedIndex;
 
-    // TO-DO declare two locks, one for the DocumentMap and one for the TermInvertedIndex
     std::mutex documentMapMutex;
     std::mutex termInvertedIndexMutex;
     

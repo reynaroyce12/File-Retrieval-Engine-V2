@@ -8,32 +8,6 @@
 
 AppInterface::AppInterface(std::shared_ptr<ProcessingEngine> engine) : engine(engine) { }
 
-// Function for processing the search query for case insensitivity
-std::string processSearchQuery(const std::string& searchQuery) {
-    std::istringstream stream(searchQuery);
-    std::string word;
-    std::vector<std::string> processedWords;
-
-    while (stream >> word) {
-        if (word == "AND") {
-            processedWords.push_back(word);
-        } else {
-            std::transform(word.begin(), word.end(), word.begin(), ::tolower);
-            processedWords.push_back(word);
-        }
-    }
-
-    // Reconstructing the query
-    std::string result;
-    for (const auto& word : processedWords) {
-        if (!result.empty()) {
-            result += " "; 
-        }
-        result += word;
-    }
-
-    return result;
-}
 
 void AppInterface::readCommands() {
     
@@ -100,10 +74,9 @@ void AppInterface::readCommands() {
         // if the command begins with search, search for files that matches the query
         if (command.size() >= 6 && command.substr(0, 6) == "search") {
             std::string searchQuery = command.substr(7);
-            std::string processedQuery = processSearchQuery(searchQuery);
 
             std::vector<std::string> terms;
-            std::istringstream stream(processedQuery);
+            std::istringstream stream(searchQuery);
             std::string term;
 
             while (stream >> term) {
@@ -112,7 +85,7 @@ void AppInterface::readCommands() {
 
             SearchResult result = engine->search(terms);
 
-            std::cout << "\nSearch executed in " << result.excutionTime << " μs." << std::endl;
+            std::cout << "\nSearch executed in " << result.excutionTime << " seconds." << std::endl;
 
             if (result.documentFrequencies.empty()) {
                 std::cout << YELLOW << "No results found" << RESET << std::endl;

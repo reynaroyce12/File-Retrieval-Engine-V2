@@ -13,7 +13,6 @@ IndexStore::IndexStore()
 
 long IndexStore::putDocument(std::string documentPath)
 {
-    // CHANGE FOR MULTITHREADING  IMPORTANT! you need to make sure that only one thread at a time can access this method
     std::lock_guard<std::mutex> lock(documentMapMutex);
 
     if (documentMap.contains(documentPath)) {
@@ -42,12 +41,10 @@ std::string IndexStore::getDocument(long documentNumber)
 
 void IndexStore::updateIndex(long documentNumber, const std::unordered_map<std::string, long> &wordFrequencies)
 {
-    // CHANGE FOR MULTITHREADING  IMPORTANT! you need to make sure that only one thread at a time can access this method
     std::lock_guard<std::mutex> lock(termInvertedIndexMutex);
 
     for (const auto &wordFrequency : wordFrequencies) {
         std::string word = wordFrequency.first;
-        std::transform(word.begin(), word.end(), word.begin(), ::tolower);
         long frequency = wordFrequency.second;
 
         auto itr = termInvertedIndex.find(word);
