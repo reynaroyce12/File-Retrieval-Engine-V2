@@ -17,7 +17,7 @@ class AppInterface {
         virtual ~AppInterface() = default;
 
         // read commands from the CLI
-        void readCommands();
+        void readCommands(int numWorkerThreads);
 };
 
 #endif

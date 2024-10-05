@@ -9,7 +9,7 @@
 AppInterface::AppInterface(std::shared_ptr<ProcessingEngine> engine) : engine(engine) { }
 
 
-void AppInterface::readCommands() {
+void AppInterface::readCommands(int numWorkerThreads) {
     
     // color code constants for output messages
     const std::string RED = "\033[31m";
@@ -64,7 +64,7 @@ void AppInterface::readCommands() {
                 std::cout << YELLOW << "No files found to index!" << RESET << std::endl;
             } else {
                 std::cout << GREEN << "Indexing completed with a total execution time of "
-                          << result.executionTime << " seconds. Total bytes read: "
+                          << result.executionTime << " seconds with " << numWorkerThreads << " worker threads." << "\nTotal bytes read: "
                           << result.totalBytesRead << RESET << std::endl;
             }
 

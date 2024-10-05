@@ -32,7 +32,7 @@ int main(int argc, char** argv)
 
     std::shared_ptr<AppInterface> interface = std::make_shared<AppInterface>(engine);
 
-    interface->readCommands();
+    interface->readCommands(numWorkerThreads);
 
     return 0;
 }
