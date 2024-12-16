@@ -1,20 +1,14 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/qs-h0QLc)
-## CSC 435 Programming Assignment 3 (Fall 2024)
-**Jarvis College of Computing and Digital Media - DePaul University**
-
-**Student:** Reyna Royce  
-**Email:** rroyce@depaul.edu  
-**Solution Programming Language:** C++
-
 ## What This Program Does
-
-
 This project implements a multithreaded file retrieval engine that indexes text files in an input folder and performs search operations over the indexed data. The program supports the following:
 
 - Multithreading for parallel indexing of files to improve the indexing performance.
 - Indexing a directory and reading files within it.
 - Searching for terms within indexed files, supporting both single-term queries and AND-based multiple term queries.
 - Displays the time taken for indexing and search operations, along with the total bytes read.
+
+### Enhancements in this version over the previous one (V1):  
+
+ In this update, I've added multi-threading to improve performance, making the indexing and search processes much faster and more efficient, especially when dealing with larger datasets. By processing multiple documents at the same time, the system can handle datasets much faster, reducing overall execution time.
 
 #### A Few Points to Consider:
 
