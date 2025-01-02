@@ -1,4 +1,4 @@
-## What This Program Does
+## What This Project Does
 This project implements a multithreaded file retrieval engine that indexes text files in an input folder and performs search operations over the indexed data. The program supports the following:
 
 - Multithreading for parallel indexing of files to improve the indexing performance.
